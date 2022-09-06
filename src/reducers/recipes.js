@@ -1,11 +1,14 @@
-import data from 'src/data';
-
 export const initialState = {
-  list: data,
+  list: [],
 };
 
 const reducer = (state = initialState, action = {}) => {
   switch (action.type) {
+    case 'SAVE_DATA':
+      return {
+        ...state,
+        list: action.list,
+      };
     default:
       return state;
   }

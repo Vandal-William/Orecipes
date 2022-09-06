@@ -5,7 +5,6 @@ import './style.scss';
 
 function Menu() {
   const recipes = useSelector((state) => state.recipes.list);
-  console.log(recipes);
   return (
     <nav className="menu">
       <NavLink

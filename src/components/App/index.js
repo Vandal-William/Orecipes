@@ -1,4 +1,6 @@
 import PropTypes from 'prop-types';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { Routes, Route } from 'react-router-dom';
 
 import Menu from 'src/components/Menu';
@@ -9,6 +11,12 @@ import Loading from './Loading';
 import './style.scss';
 
 function App(props) {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch({
+      type: 'FETCH_RECIPES',
+    });
+  }, []);
   if (props.loading) {
     return <Loading />;
   }

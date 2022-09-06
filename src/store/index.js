@@ -1,11 +1,12 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 
 import reducer from 'src/reducers';
+import recipes from 'src/middlewares/ajax';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const enhancers = composeEnhancers(
-  applyMiddleware(),
+  applyMiddleware(recipes),
 );
 
 const store = createStore(reducer, enhancers);

@@ -19,51 +19,29 @@ import './style.scss';
 // == Composant
 function Recipe() {
   const params = useParams();
-  if (params.slug) {
-    const recipe = useSelector((state) => findRecipe(state.recipes.list, `${params.slug}`));
-    if (!recipe) {
-      return <Navigate to="/error" replace />;
-    }
-    return (
-      <Page>
-        <AppHeader />
-        <div className="recipe">
-          <Header
-            name={recipe.title}
-            thumbnail={recipe.thumbnail}
-            author={recipe.author}
-            difficulty={recipe.difficulty}
-          />
-          <Ingredients
-            list={recipe.ingredients}
-          />
-          <Instructions
-            steps={recipe.instructions}
-          />
-        </div>
-      </Page>
-    );
+  const recipe = useSelector((state) => findRecipe(state.recipes.list, `${params.slug}`));
+  if (!recipe) {
+    return <Navigate to="/error" replace />;
   }
-
-  // return (
-  //   <Page>
-  //     <AppHeader />
-  //     <div className="recipe">
-  //       <Header
-  //         name={recipe.title}
-  //         thumbnail={recipe.thumbnail}
-  //         author={recipe.author}
-  //         difficulty={recipe.difficulty}
-  //       />
-  //       <Ingredients
-  //         list={recipe.ingredients}
-  //       />
-  //       <Instructions
-  //         steps={recipe.instructions}
-  //       />
-  //     </div>
-  //   </Page>
-  // );
+  return (
+    <Page>
+      <AppHeader />
+      <div className="recipe">
+        <Header
+          name={recipe.title}
+          thumbnail={recipe.thumbnail}
+          author={recipe.author}
+          difficulty={recipe.difficulty}
+        />
+        <Ingredients
+          list={recipe.ingredients}
+        />
+        <Instructions
+          steps={recipe.instructions}
+        />
+      </div>
+    </Page>
+  );
 }
 
 // == Export
