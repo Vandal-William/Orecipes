@@ -1,6 +1,6 @@
 /* eslint-disable arrow-body-style */
 // == Import : npm
-import { Navigate } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import { findRecipe } from 'src/selectors/recipes';
@@ -18,30 +18,52 @@ import './style.scss';
 
 // == Composant
 function Recipe() {
-  const recipe = useSelector((state) => findRecipe(state.recipes.list, 'crepes-raffinees'));
-
-  if (!recipe) {
-    return <Navigate to="/error" replace={true} />;
+  const params = useParams();
+  if (params.slug) {
+    const recipe = useSelector((state) => findRecipe(state.recipes.list, `${params.slug}`));
+    if (!recipe) {
+      return <Navigate to="/error" replace />;
+    }
+    return (
+      <Page>
+        <AppHeader />
+        <div className="recipe">
+          <Header
+            name={recipe.title}
+            thumbnail={recipe.thumbnail}
+            author={recipe.author}
+            difficulty={recipe.difficulty}
+          />
+          <Ingredients
+            list={recipe.ingredients}
+          />
+          <Instructions
+            steps={recipe.instructions}
+          />
+        </div>
+      </Page>
+    );
   }
-  return (
-    <Page>
-      <AppHeader />
-      <div className="recipe">
-        <Header
-          name={recipe.title}
-          thumbnail={recipe.thumbnail}
-          author={recipe.author}
-          difficulty={recipe.difficulty}
-        />
-        <Ingredients
-          list={recipe.ingredients}
-        />
-        <Instructions
-          steps={recipe.instructions}
-        />
-      </div>
-    </Page>
-  );
+
+  // return (
+  //   <Page>
+  //     <AppHeader />
+  //     <div className="recipe">
+  //       <Header
+  //         name={recipe.title}
+  //         thumbnail={recipe.thumbnail}
+  //         author={recipe.author}
+  //         difficulty={recipe.difficulty}
+  //       />
+  //       <Ingredients
+  //         list={recipe.ingredients}
+  //       />
+  //       <Instructions
+  //         steps={recipe.instructions}
+  //       />
+  //     </div>
+  //   </Page>
+  // );
 }
 
 // == Export

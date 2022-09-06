@@ -1,12 +1,11 @@
 import PropTypes from 'prop-types';
+import { Routes, Route } from 'react-router-dom';
 
 import Menu from 'src/components/Menu';
 import Home from 'src/components/Home';
-// import Recipe from 'src/components/Recipe';
-// import Error from 'src/components/Error';
-
+import Recipe from 'src/components/Recipe';
+import Error from 'src/components/Error';
 import Loading from './Loading';
-
 import './style.scss';
 
 function App(props) {
@@ -16,9 +15,11 @@ function App(props) {
   return (
     <div className="app">
       <Menu />
-      <Home />
-      {/* <Recipe /> */}
-      {/* <Error /> */}
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/recipe/:slug" element={<Recipe />} />
+        <Route path="*" element={<Error />} />
+      </Routes>
     </div>
   );
 }
