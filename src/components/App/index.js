@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Routes, Route } from 'react-router-dom';
 
 import Menu from 'src/components/Menu';
@@ -8,16 +8,17 @@ import Home from 'src/components/Home';
 import Recipe from 'src/components/Recipe';
 import Error from 'src/components/Error';
 import Loading from './Loading';
+import { fetchRecipes } from '../../actions/recipes';
 import './style.scss';
 
-function App(props) {
+function App() {
   const dispatch = useDispatch();
+  const loading = useSelector((state) => state.recipes.loading);
+
   useEffect(() => {
-    dispatch({
-      type: 'FETCH_RECIPES',
-    });
+    dispatch(fetchRecipes());
   }, []);
-  if (props.loading) {
+  if (loading) {
     return <Loading />;
   }
   return (

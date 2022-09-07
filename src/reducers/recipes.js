@@ -1,13 +1,17 @@
+import { SAVE_RECIPES } from '../actions/recipes';
+
 export const initialState = {
   list: [],
+  loading: true,
 };
 
 const reducer = (state = initialState, action = {}) => {
   switch (action.type) {
-    case 'SAVE_DATA':
+    case SAVE_RECIPES:
       return {
         ...state,
-        list: action.list,
+        list: action.recipes,
+        loading: false,
       };
     default:
       return state;
