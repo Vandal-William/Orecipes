@@ -3,10 +3,13 @@ import { FETCH_RECIPES, saveRecipes } from '../actions/recipes';
 
 // eslint-disable-next-line no-unused-vars
 let token;
+const instance = axios.create({
+  baseURL: 'http://localhost:3001',
+});
 
 const api = (store) => (next) => (action) => {
   if (action.type === FETCH_RECIPES) {
-    axios.get('http://localhost:3001/recipes')
+    instance.get('/recipes')
       .then((response) => {
         store.dispatch(saveRecipes(response.data));
       })
@@ -17,12 +20,14 @@ const api = (store) => (next) => (action) => {
   }
   else if (action.type === 'LOGIN') {
     const state = store.getState();
-    axios.post('http://localhost:3001/login', {
+    instance.post('/login', {
       email: state.user.email,
       password: state.user.password,
     })
       .then((response) => {
-        token = response.data.token;
+        // on altère notre confiig par défaut pour ajouter le token en entete
+        // ainsi toutes les requetes qui partiront après le login auront cette entete ...
+        instance.defaults.headers.common.Authorization = `Bearer ${response.data.token}`;
         store.dispatch({
           type: 'SAVE_USER',
           pseudo: response.data.pseudo,
@@ -35,11 +40,7 @@ const api = (store) => (next) => (action) => {
   }
   // route pour accéder aux favories d'un utilisateur
   else if (action.type === 'FETCH_FAV') {
-    axios.get('http://localhost:3001/favorites', {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
+    instance.get('/favorites')
       .then((response) => {
         store.dispatch({
           type: 'SAVE_FAV',
@@ -51,6 +52,10 @@ const api = (store) => (next) => (action) => {
         console.log(error);
         alert('Erreur de chargement, veuillez réessayer');
       });
+  }
+  else if (action.type === 'LOGOUT') {
+    // j'oublie mon token au logout
+    instance.defaults.headers.common.Authorization = undefined;
   }
   next(action);
 };

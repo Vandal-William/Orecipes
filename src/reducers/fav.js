@@ -4,6 +4,11 @@ const initialState = {
 
 function reducer(state = initialState, action = {}) {
   switch (action.type) {
+    case 'LOGOUT':
+      return {
+        ...state,
+        list: [],
+      };
     case 'SAVE_FAV':
       return {
         ...state,

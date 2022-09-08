@@ -3,8 +3,11 @@ import AppHeader from 'src/components/AppHeader';
 import Content from 'src/components/Content';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
+import { Navigate } from 'react-router-dom';
 
 function Fav() {
+  const isLogged = useSelector((state) => state.user.logged);
+
   const favorites = useSelector((state) => state.favorites.list);
   const dispatch = useDispatch();
   useEffect(() => {
@@ -12,6 +15,11 @@ function Fav() {
       type: 'FETCH_FAV',
     });
   }, []);
+
+  if (!isLogged) {
+    return <Navigate to="/" replace />;
+  }
+
   return (
     <Page>
       <AppHeader />
